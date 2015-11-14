@@ -1,2 +1,3 @@
 hello git
 git is free software
+git has amutable index called stage.
