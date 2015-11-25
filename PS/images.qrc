@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/">
+        <file>image/battary_16.ico</file>
+        <file>image/Battery_48.ico</file>
+        <file>image/blank.ico</file>
+        <file>image/facom1.png</file>
+        <file>image/facom2.png</file>
+        <file>image/facom3.png</file>
+        <file>image/facom4.png</file>
+        <file>image/gray.png</file>
+        <file>image/gray_48.png</file>
+        <file>image/green.png</file>
+        <file>image/green_16.ico</file>
+        <file>image/green_48.png</file>
+        <file>image/grey_16.ico</file>
+        <file>image/red.png</file>
+        <file>image/red_48.png</file>
+        <file>image/yellow.png</file>
+        <file>image/HBTE.ico</file>
+    </qresource>
+</RCC>

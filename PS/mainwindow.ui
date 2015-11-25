@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>996</width>
+    <height>800</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>800</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QTreeWidget" name="treeWidget">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>100</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <column>
+       <property name="text">
+        <string notr="true">1</string>
+       </property>
+      </column>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="minor_widget" native="true">
+      <layout class="QHBoxLayout" name="HLayout_minor_widget">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_minor">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QScrollArea" name="scrollArea">
+           <property name="minimumSize">
+            <size>
+             <width>571</width>
+             <height>101</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>151</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);</string>
+           </property>
+           <property name="widgetResizable">
+            <bool>true</bool>
+           </property>
+           <widget class="QWidget" name="scrollAreaWidgetContents">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>0</y>
+              <width>618</width>
+              <height>149</height>
+             </rect>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <item>
+              <widget class="QLabel" name="label">
+               <property name="maximumSize">
+                <size>
+                 <width>571</width>
+                 <height>101</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">image: url(:/image/facom2.png);</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </widget>
+         </item>
+         <item>
+          <widget class="QTableWidget" name="tableWidget">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>620</width>
+             <height>400</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <attribute name="horizontalHeaderStretchLastSection">
+            <bool>true</bool>
+           </attribute>
+           <attribute name="verticalHeaderStretchLastSection">
+            <bool>false</bool>
+           </attribute>
+          </widget>
+         </item>
+         <item>
+          <widget class="QTextBrowser" name="textBrowser">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>50</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>996</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu_F">
+    <property name="title">
+     <string>Home</string>
+    </property>
+    <addaction name="action_OverView"/>
+    <addaction name="action_Alarm_Status"/>
+    <addaction name="action_Outlet_Status"/>
+    <addaction name="separator"/>
+   </widget>
+   <widget class="QMenu" name="menu_V">
+    <property name="title">
+     <string>Device Manager</string>
+    </property>
+    <addaction name="action_Load_Management"/>
+    <addaction name="action_control"/>
+    <addaction name="actionConfiguration"/>
+    <addaction name="actionScheduling"/>
+   </widget>
+   <widget class="QMenu" name="menu_S">
+    <property name="title">
+     <string>Logs</string>
+    </property>
+    <widget class="QMenu" name="menuEvents">
+     <property name="title">
+      <string>Events</string>
+     </property>
+     <addaction name="actionLog_event"/>
+     <addaction name="actionReverse_lookup"/>
+    </widget>
+    <widget class="QMenu" name="menuData">
+     <property name="title">
+      <string>Data</string>
+     </property>
+     <addaction name="actionLog_2"/>
+     <addaction name="actionInterval"/>
+     <addaction name="actionRotation"/>
+    </widget>
+    <addaction name="menuEvents"/>
+    <addaction name="menuData"/>
+   </widget>
+   <widget class="QMenu" name="menu_H">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAbout"/>
+    <addaction name="actionHelp_F1"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Administration</string>
+    </property>
+    <addaction name="actionSecurity"/>
+   </widget>
+   <addaction name="menu_F"/>
+   <addaction name="menu_V"/>
+   <addaction name="menu_S"/>
+   <addaction name="menuHelp"/>
+   <addaction name="menu_H"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QDockWidget" name="dockWidget_2">
+   <property name="styleSheet">
+    <string notr="true">margin: 0px;</string>
+   </property>
+   <property name="floating">
+    <bool>false</bool>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_4">
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QTreeWidget" name="treeWidget_2">
+       <property name="styleSheet">
+        <string notr="true">margin: 0px;</string>
+       </property>
+       <column>
+        <property name="text">
+         <string notr="true">1</string>
+        </property>
+       </column>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <action name="action_OverView">
+   <property name="text">
+    <string>Overview</string>
+   </property>
+   <property name="whatsThis">
+    <string>新建文件</string>
+   </property>
+  </action>
+  <action name="action_Alarm_Status">
+   <property name="text">
+    <string>Alarm Status</string>
+   </property>
+   <property name="whatsThis">
+    <string>打开文件</string>
+   </property>
+  </action>
+  <action name="action_Outlet_Status">
+   <property name="text">
+    <string>Outlet Status</string>
+   </property>
+   <property name="whatsThis">
+    <string>运行</string>
+   </property>
+  </action>
+  <action name="action_Device">
+   <property name="text">
+    <string>最近的Device</string>
+   </property>
+  </action>
+  <action name="action_Load_Management">
+   <property name="text">
+    <string>Load Management</string>
+   </property>
+   <property name="whatsThis">
+    <string>查看log</string>
+   </property>
+  </action>
+  <action name="actionChang_Net">
+   <property name="text">
+    <string>更改网络设置</string>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+  </action>
+  <action name="actionAdd_User">
+   <property name="text">
+    <string>添加用户</string>
+   </property>
+   <property name="whatsThis">
+    <string>添加用户</string>
+   </property>
+  </action>
+  <action name="actionDelete_User">
+   <property name="text">
+    <string>删除用户</string>
+   </property>
+   <property name="whatsThis">
+    <string>删除用户</string>
+   </property>
+  </action>
+  <action name="actionChang_Passwd">
+   <property name="text">
+    <string>修改密码</string>
+   </property>
+   <property name="whatsThis">
+    <string>修改用户密码</string>
+   </property>
+  </action>
+  <action name="actionRename_Device">
+   <property name="text">
+    <string>重命名Device</string>
+   </property>
+  </action>
+  <action name="actionSet_Electric">
+   <property name="text">
+    <string>设置电流阀值</string>
+   </property>
+   <property name="whatsThis">
+    <string>设置电流的最大最小值</string>
+   </property>
+  </action>
+  <action name="actionCheck_Power">
+   <property name="text">
+    <string>查询电流阀值</string>
+   </property>
+   <property name="whatsThis">
+    <string>查询电源的大小</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About Version</string>
+   </property>
+  </action>
+  <action name="actionHelp_F1">
+   <property name="text">
+    <string>Help(&amp;F1)</string>
+   </property>
+  </action>
+  <action name="action_connect">
+   <property name="text">
+    <string>连接</string>
+   </property>
+  </action>
+  <action name="action_disconnect">
+   <property name="text">
+    <string>断开连接</string>
+   </property>
+  </action>
+  <action name="action_add_device">
+   <property name="text">
+    <string>添加Device</string>
+   </property>
+  </action>
+  <action name="action_del_device">
+   <property name="text">
+    <string>删除Device</string>
+   </property>
+  </action>
+  <action name="action_btn">
+   <property name="text">
+    <string>查询开关状态</string>
+   </property>
+  </action>
+  <action name="action_all_btn">
+   <property name="text">
+    <string>设置总开关</string>
+   </property>
+  </action>
+  <action name="action_control">
+   <property name="text">
+    <string>Control</string>
+   </property>
+  </action>
+  <action name="actionConfiguration">
+   <property name="text">
+    <string>Configuration</string>
+   </property>
+  </action>
+  <action name="actionScheduling">
+   <property name="text">
+    <string>Scheduling</string>
+   </property>
+  </action>
+  <action name="actionLog_event">
+   <property name="text">
+    <string>log</string>
+   </property>
+  </action>
+  <action name="actionReverse_lookup">
+   <property name="text">
+    <string>reverse lookup</string>
+   </property>
+  </action>
+  <action name="actionLog_2">
+   <property name="text">
+    <string>log</string>
+   </property>
+  </action>
+  <action name="actionInterval">
+   <property name="text">
+    <string>interval</string>
+   </property>
+  </action>
+  <action name="actionRotation">
+   <property name="text">
+    <string>rotation</string>
+   </property>
+  </action>
+  <action name="actionSecurity">
+   <property name="text">
+    <string>Security</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>
