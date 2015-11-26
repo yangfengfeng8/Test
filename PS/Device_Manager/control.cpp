@@ -110,7 +110,8 @@ void Control::Init_tabWidget(int row,int column)
         h_layout_4->addWidget(modification);
         widget_4->setLayout(h_layout_4);
         ui->control_tableWidget->setCellWidget(i,7,widget_4);
-    }
+    }    
+    ui->control_tableWidget->setMinimumHeight(8*60);
 }
 
 void Control::on_Control_All_Trigger_clicked()
@@ -168,8 +169,12 @@ void Control::get_real_eletric(int device_port, int real_eletric)
 
 void Control::get_row(int row)
 {
+    for(int i=0;i<row;i++){
+        ui->control_tableWidget->setRowHidden(i,false);
+    }
     for(int i=row;i < 8;i++){
         ui->control_tableWidget->setRowHidden(i,true);
     }
+    ui->control_tableWidget->setMinimumHeight(row*60);
 }
 

@@ -31,6 +31,9 @@ public:
 
     void search_Max_eletric(int branch);
 
+    void search_Device_info(Device_Name name);
+
+    void search_version(Device_Name name);
 
 public slots:
     void timeout();

@@ -224,7 +224,13 @@ signals:
     void change_name(Device_Name name,int row,QList<int> ele_max);
 
     //Outlet_configuration 更新数据；
+    void send_Control_configuration_Device_Name(Device_Name name);
 
+    void send_Control_configuration_row(int row);
+
+    void send_Control_configuration_on_delay(int device_port,int on_delay);
+
+    void send_Control_configuration_off_delay(int device_port,int off_delay);
 
 private:
     Ui::MainWindow *ui;
@@ -241,7 +247,6 @@ private:
 
     QMenu *device_child_menu;
 
-    QAction *action_device;
     QAction *action_fold;
     QAction *action_add_device;
     QAction *action_del_device;

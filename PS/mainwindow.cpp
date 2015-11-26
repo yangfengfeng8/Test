@@ -159,6 +159,13 @@ void MainWindow::GetPrevious_device()
         if(list.size() < 4){
             return ;
         }
+
+        if((list.size() - 5)%5 != 0){
+            file.close();
+            file.remove();
+            return ;
+        }
+
         d_info  = new Device_Info(list.at(1),list.at(0),list.at(2).toInt(),list.at(3).toInt(),this);
 
         connect(this,SIGNAL(all_btn_on_off(Device_Name,int,ON_OFF)),d_info,SLOT(set_all_btn(Device_Name,int,ON_OFF)));
@@ -424,6 +431,9 @@ void MainWindow::Change_tableWidget()
 
     emit send_row(d_info->row());
 
+    emit send_Control_configuration_Device_Name(d_info->name());
+    emit send_Control_configuration_row(d_info->row());
+
     QList<int> ele_max;
 
     for(int i=0;i<d_info->row();i++){
@@ -443,6 +453,9 @@ void MainWindow::Change_tableWidget()
         emit send_Min_eletric(i,d_info->current_status(i).min_current);
         emit send_real_eletric(i,d_info->current_status(i).actual_current);
         emit send_on_off_status(i,d_info->current_status(i).power_port);
+
+        emit send_Control_configuration_on_delay(i,d_info->current_status(i).on_delay);
+        emit send_Control_configuration_off_delay(i,d_info->current_status(i).off_delay);
     }
     emit change_name(d_info->name(),d_info->row(),ele_max);
 }
@@ -512,24 +525,22 @@ void MainWindow::CreateItemMenu()
     device_child_menu->addSeparator();
 
     action_change_net  = device_child_menu->addAction(tr("Change Network"),this,SLOT(on_actionChang_Net_triggered()));
-    action_change_net->setEnabled(false);
-    ui->actionChang_Net->setEnabled(false);
+
     action_connect  = device_child_menu->addAction(tr("Connect"),this,SLOT(on_action_connect_triggered()));
 
     action_disconnect   = device_child_menu->addAction(tr("Disconnect"),this,SLOT(on_action_disconnect_triggered()));
-    action_disconnect->setEnabled(false);
-    ui->action_disconnect->setEnabled(false);
+
     device_child_menu->addSeparator();
 
-    action_del_device->setEnabled(false);
-    ui->action_del_device->setEnabled(false);
-
-    action_rename->setEnabled(false);
-    ui->actionRename_Device->setEnabled(false);
     device_child_menu->addSeparator();
     action_fold = device_child_menu->addAction(tr("Fold all"),this,SLOT(onaction_fold_triggered()));
 
-    ui->actionSet_Electric->setEnabled(false);
+    action_del_device->setEnabled(false);
+    action_rename->setEnabled(false);
+
+    action_change_net->setEnabled(false);
+    action_connect->setEnabled(false);
+    action_disconnect->setEnabled(false);
 }
 
 //点击右键时，使能或禁止某些功能；
@@ -537,15 +548,11 @@ void MainWindow::change_contex_menu_status(Device_Info *d_info)
 {
     label_device_name_bar->setText(d_info->name()+":");
     if(d_info->connect() == connected){
-        ui->action_connect->setEnabled(false);
-        ui->action_disconnect->setEnabled(true);
         action_connect->setEnabled(false);
         action_disconnect->setEnabled(true);
         label_ip_bar->setText(tr("connected"));
     }
     else {
-        ui->action_connect->setEnabled(true);
-        ui->action_disconnect->setEnabled(false);
         action_connect->setEnabled(true);
         action_disconnect->setEnabled(false);
         label_ip_bar->setText(tr("disconnected"));
@@ -621,7 +628,6 @@ void MainWindow::on_action_control_triggered()
         connect(this,SIGNAL(send_Min_eletric(int,int)),control,SLOT(get_Min(int,int)));
         connect(this,SIGNAL(send_Describe(int,QString)),control,SLOT(get_Describe(int,QString)));
         connect(this,SIGNAL(send_row(int)),control,SLOT(get_row(int)));
-
         Change_tableWidget();
     }
     tabWidget->addTab(control,"Control");
@@ -655,10 +661,9 @@ void MainWindow::get_on_off_delay(Device_Name name, int device_port, int on_dela
 {
     device_info.value(name)->change_Current_status(name,device_port,on_delay,off_delay);
     tabWidget->removeTab(tabWidget->indexOf(outlet_configure_child));
-    if(d_info->name() == name){
-        outlet_configuration->set_on_delay(device_port,on_delay);
-        outlet_configuration->set_off_delay(device_port,off_delay);
-    }
+    qDebug()<<"error";
+    emit send_Control_configuration_on_delay(device_port,on_delay);
+    emit send_Control_configuration_off_delay(device_port,off_delay);
 }
 
 //获取延时时间后，关闭延时界面；
@@ -703,13 +708,18 @@ void MainWindow::set_all_on_off(int index)
 //开始向底层发送数据；
 void MainWindow::start_all_on_off(Device_Name name, ON_OFF flag)
 {
-
+    emit all_btn_on_off(name,flag);
 }
 
+//打开Control_confirmation界面；
 void MainWindow::on_actionConfiguration_triggered()
 {
     if(outlet_configuration == NULL){
         outlet_configuration    = new Outlet_Configuration;
+        connect(this,SIGNAL(send_Control_configuration_Device_Name(Device_Name)),outlet_configuration,SLOT(set_Device_Name(Device_Name)));
+        connect(this,SIGNAL(send_Control_configuration_row(int)),outlet_configuration,SLOT(set_row(int)));
+        connect(this,SIGNAL(send_Control_configuration_on_delay(int,int)),outlet_configuration,SLOT(set_on_delay(int,int)));
+        connect(this,SIGNAL(send_Control_configuration_off_delay(int,int)),outlet_configuration,SLOT(set_off_delay(int,int)));
     }
     tabWidget->addTab(outlet_configuration,"Outlet Configuration");
     tabWidget->setCurrentWidget(outlet_configuration);
@@ -780,16 +790,19 @@ void MainWindow::on_actionAdd_User_triggered()
     adduser->exec();
 }
 
+//删除用户；
 void MainWindow::on_actionDelete_User_triggered()
 {
     qDebug()<<tr("on action delete user triggered!!!");
 }
 
+//更改密码；
 void MainWindow::on_actionChang_Passwd_triggered()
 {
     qDebug()<<tr("on action change passwd triggered!!!");
 }
 
+//设备重命名；
 void MainWindow::on_actionRename_Device_triggered()
 {
     Rename *rename  = new Rename(device_info,this);
@@ -827,16 +840,19 @@ void MainWindow::on_action_all_btn_triggered()
     delete all_btn;
 }
 
+//版本信息；
 void MainWindow::on_actionAbout_triggered()
 {
     qDebug()<<tr("on action about triggered!!!");
 }
 
+//帮助信息；
 void MainWindow::on_actionHelp_F1_triggered()
 {
     qDebug()<<tr("on action help F1 triggered!!!");
 }
 
+//连接；
 void MainWindow::on_action_connect_triggered()
 {
     d_info->set_connect(connected);
@@ -846,6 +862,7 @@ void MainWindow::on_action_connect_triggered()
     emit connected_status(name,ip,d_info->port(),d_info->row(),connected);
 }
 
+//断开连接；
 void MainWindow::on_action_disconnect_triggered()
 {
     d_info->set_connect(disconnected);
@@ -882,8 +899,8 @@ void MainWindow::on_action_add_device_triggered()
 {
     d_info      = new Device_Info("","",0,0,this);
 
-//    connect(this,SIGNAL(all_btn_on_off(Device_Name,int,ON_OFF)),d_info,SLOT(set_all_btn(Device_Name,int,ON_OFF)));
-//    connect(d_info,SIGNAL(set_one_off(Device_Name,int,ON_OFF)),logicAction,SIGNAL(set_on_off(Device_Name,int,ON_OFF)));
+    connect(this,SIGNAL(all_btn_on_off(Device_Name,int,ON_OFF)),d_info,SLOT(set_all_btn(Device_Name,int,ON_OFF)));
+    connect(d_info,SIGNAL(set_one_off(Device_Name,int,ON_OFF)),logicAction,SIGNAL(set_on_off(Device_Name,int,ON_OFF)));
 
     add_device  = new Add_device(this);
 
@@ -898,15 +915,12 @@ void MainWindow::on_action_add_device_triggered()
 
     action_change_net->setEnabled(true);
     action_del_device->setEnabled(true);
-    ui->actionChang_Net->setEnabled(true);
-    ui->action_del_device->setEnabled(true);
-    ui->actionSet_Electric->setEnabled(true);
     action_rename->setEnabled(true);
-    ui->actionRename_Device->setEnabled(true);
+    action_disconnect->setEnabled(false);
 
     delete add_device;
 }
-
+//删除设备；
 void MainWindow::on_action_del_device_triggered()
 {
     if(item->parent() == 0){
@@ -923,11 +937,9 @@ void MainWindow::on_action_del_device_triggered()
     if(d_info == NULL){
         action_change_net->setEnabled(false);
         action_del_device->setEnabled(false);
-        ui->actionChang_Net->setEnabled(false);
-        ui->action_del_device->setEnabled(false);
-        ui->actionSet_Electric->setEnabled(false);
         action_rename->setEnabled(false);
-        ui->actionRename_Device->setEnabled(false);
+        action_connect->setEnabled(false);
+        action_disconnect->setEnabled(false);
         return ;
     }
     Change_tableWidget();
@@ -965,7 +977,7 @@ void MainWindow::receive_max_eletric(QStringList &str)
         Change_tableWidget(i,str.at(i).toInt());
     }
 }
-
+//设备重命名；
 void MainWindow::rename_device(QString &newName, QString &oldName, QStringList &str)
 {
     d_info    = device_info.value(oldName);
@@ -979,7 +991,7 @@ void MainWindow::rename_device(QString &newName, QString &oldName, QStringList &
     on_treeWidget_itemClicked(d_info->item(),0);
 }
 
-
+//更改设备；
 void MainWindow::change_device(QString &name, QString &IP, QString &port, int &index)
 {
     d_info  = device_info.value(name);

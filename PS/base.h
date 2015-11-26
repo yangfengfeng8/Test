@@ -14,6 +14,41 @@
 #include <QWidget>
 #include <QDialog>
 #include <QTimer>
+#include <QObject>
+
+class Timer_New : public QObject
+{
+    Q_OBJECT
+public:
+    Timer_New(QObject *parent = 0)
+        : QObject(parent)
+    {
+    }
+    ~Timer_New(){}
+
+
+signals:
+    void time_out(int device_port);
+
+public slots:
+    void timeout(){
+        emit time_out(device_port);
+        timer.stop();
+    }
+
+public:
+    void set_info(const int device_port,const int interval){
+        this->device_port   = device_port;
+        this->Interval      = interval;
+        timer.start(Interval);
+        connect(&timer,SIGNAL(timeout()),this,SLOT(timeout()));
+    }
+private:
+    int device_port;
+    int Interval;
+    QTimer timer;
+};
+
 
 enum ON_OFF{OFF,ON};
 enum Connected{connected,disconnected};
@@ -71,10 +106,6 @@ public:
         Item->setText(1,IP);
 
         Connect = disconnected;
-
-        btn_id  = 0;
-
-        QObject::connect(&timer,SIGNAL(timeout()),this,SLOT(timeout()));
     }
     ~Device_Info(){}
 
@@ -148,7 +179,11 @@ signals:
     void set_one_off(Device_Name name,int device_port,ON_OFF);
 
 public slots:
-    void set_all_btn(Device_Name name,int interval,ON_OFF on_off){
+    void timeout(int device_port){
+        emit set_one_off(Name,device_port,on_off);
+    }
+
+    void set_all_btn(Device_Name name,ON_OFF on_off){
         if(name != Name){
             return ;
         }
@@ -156,18 +191,21 @@ public slots:
             QMessageBox::warning((QWidget*)parent,tr("警告"),tr("%1设备没有连接网络，请先连接网络！").arg(name),tr("确定"));
             return ;
         }
-        timer.start(interval*1000);
+        if(on_off == ON){
+            for(int i=0;i<Row;i++){
+                QObject::connect(&on_timer.at(i),SIGNAL(time_out(int)),this,SLOT(timeout(int)));
+                //timer = on_timer.at(i);
+                timer.set_info(1,1);
+            }
+        }
+        else {
+            for(int i=0;i<Row;i++){
+                QObject::connect(&off_timer.at(i),SIGNAL(time_out(int)),this,SLOT(timeout(int)));
+            }
+        }
         this->on_off    = on_off;
     }
 
-    void timeout(){
-        emit set_one_off(Name,btn_id,on_off);
-        btn_id++;
-        if(btn_id >= Row){
-            btn_id  = 0;
-            timer.stop();
-        }
-    }
 
 private:
     QObject *parent;
@@ -175,12 +213,13 @@ private:
     QString Name;
     int Port;
     int Row;
-    int btn_id;
     ON_OFF on_off;
-    QTimer timer;
     QTreeWidgetItem *Item;
     Connected Connect;
     QMap<int,Current_status> current;
+    QList<Timer_New> on_timer;
+    QList<Timer_New> off_timer;
+    Timer_New timer;
 };
 
 #endif // BASE

@@ -167,6 +167,28 @@ void LogicActionPrivate::search_Max_eletric(int branch)
     }
 }
 
+//查询设备信息；
+void LogicActionPrivate::search_Device_info(Device_Name name)
+{
+    if(this->name != name){
+        return ;
+    }
+    QString str;
+    str = "$TA Z\r\n";
+    tcpSocket->write(str.constData());
+}
+
+//查询版本信息；
+void LogicActionPrivate::search_version(Device_Name name)
+{
+    if(this->name != name){
+        return ;
+    }
+    QString str;
+    str = "$TA W\r\n";
+    tcpSocket->write(str.constData());
+}
+
 //05 设置某一支路的开关状态；01 05 00 00 FF 00 8C 3A 开 01 05 00 00 00 00 CD CA 关
 void LogicActionPrivate::set_on_off(Device_Name name,int branch, ON_OFF on_off)
 {
@@ -238,6 +260,7 @@ void LogicActionPrivate::parseCmd()
 {
     if(rv_list.size() < 2)
         return ;
+
     quint16 temp    = qChecksum(rv_list,rv_list.size()-2);
     if(temp != (rv_list.at(rv_list.size()-2) | (rv_list.at(rv_list.size()-1) << 8))){
         return ;
@@ -285,6 +308,11 @@ void LogicActionPrivate::readMessage()
     temp	= tcpSocket->readAll();
     bool m;
     QDataStream out(&temp,QIODevice::ReadWrite);
+
+    QString str;
+    int len;
+    out.readBytes(str,len);
+
     rv_list.clear();
     while(!out.atEnd()){
         quint8 outchar = 0;

@@ -35,15 +35,15 @@ void Outlet_Configuration::set_row(int row)
 
 void Outlet_Configuration::set_on_delay(int device_port, int on_delay)
 {
-    ui->groupBox->findChild<QLabel*>(tr("label_on_%1").arg(device_port))->setText(tr("%1 seconds").arg(on_delay));
+    ui->groupBox->findChild<QLabel*>(tr("label_on_%1").arg(device_port+1))->setText(tr("%1 seconds").arg(on_delay));
 }
 
 void Outlet_Configuration::set_off_delay(int device_port, int off_delay)
 {
-    ui->groupBox->findChild<QLabel*>(tr("label_off_%1").arg(device_port))->setText(tr("%1 seconds").arg(off_delay));
+    ui->groupBox->findChild<QLabel*>(tr("label_off_%1").arg(device_port+1))->setText(tr("%1 seconds").arg(off_delay));
 }
 
 void Outlet_Configuration::set_describe(int device_port, QString describe)
 {
-    ui->groupBox->findChild<QLabel*>(tr("label%1").arg(device_port))->setText(describe);
+    ui->groupBox->findChild<QLabel*>(tr("label%1").arg(device_port+1))->setText(describe);
 }
