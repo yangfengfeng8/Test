@@ -33,7 +33,8 @@ SOURCES += main.cpp\
     Device_Manager/outlet_configuration.cpp \
     Device_Manager/outlet_configure_child.cpp \
     Device_Manager/scheduling.cpp \
-    Event/log_event.cpp
+    Event/log_event.cpp \
+    Device_Manager/control_confirmation.cpp
 
 HEADERS  += mainwindow.h \
     add_device.h \
@@ -54,7 +55,8 @@ HEADERS  += mainwindow.h \
     Device_Manager/outlet_configuration.h \
     Device_Manager/outlet_configure_child.h \
     Device_Manager/scheduling.h \
-    Event/log_event.h
+    Event/log_event.h \
+    Device_Manager/control_confirmation.h
 
 FORMS    += mainwindow.ui \
     home/home.ui \
@@ -64,7 +66,8 @@ FORMS    += mainwindow.ui \
     Device_Manager/outlet_configuration.ui \
     Device_Manager/outlet_configuration_child.ui \
     Device_Manager/scheduling.ui \
-    Event/log_event.ui
+    Event/log_event.ui \
+    Device_Manager/control_confirmation.ui
 
 RESOURCES += \
     images.qrc

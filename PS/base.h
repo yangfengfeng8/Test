@@ -32,6 +32,8 @@ typedef struct {
     int min_current;
     int actual_current;
     QString describe;
+    int on_delay;
+    int off_delay;
 }Current_status;
 
 
@@ -40,28 +42,6 @@ class PushButtonPrivat : public QPushButton
     Q_OBJECT
 public:
     PushButtonPrivat(int device_port, QWidget *parent)
-        : QPushButton(parent)
-        ,device_port(device_port)
-    {
-        connect(this,SIGNAL(clicked(bool)),this,SLOT(clicked()));
-    }
-signals:
-    void button_status(int);
-
-public slots:
-    void clicked(){
-        emit button_status(device_port);
-    }
-
-private:
-    int device_port;
-};
-
-class SearchPushButton : public QPushButton
-{
-    Q_OBJECT
-public:
-    SearchPushButton(int device_port, QWidget *parent)
         : QPushButton(parent)
         ,device_port(device_port)
     {
@@ -114,13 +94,15 @@ public:
     inline void set_connect(const Connected connect){this->Connect = connect;}
     inline void set_Current_status(int index,Current_status current_status){this->current.insert(index,current_status);}
 
-    inline void set_Current_status(int device_port,int max_current,int min_current,int actual_current,QString describe){
+    inline void set_Current_status(int device_port,int max_current,int min_current,int actual_current,int on_delay,int off_delay,QString describe){
         Current_status current_status;
         current_status.max_current  = max_current;
         current_status.min_current  = min_current;
         current_status.actual_current   = actual_current;
         current_status.describe = describe;
         current_status.power_port   = OFF;
+        current_status.on_delay     = on_delay;
+        current_status.off_delay    = off_delay;
         this->current.insert(device_port,current_status);
     }
     inline void change_Current_status(int device_port,int max_current){
@@ -150,6 +132,13 @@ public:
     inline void change_Current_status(int device_port,ON_OFF on_off){
         Current_status current_status   = this->current_status(device_port);
         current_status.power_port   = on_off;
+        current.insert(device_port,current_status);
+    }
+    inline void change_Current_status(QString dump,int device_port,int on_delay,int off_delay){
+        dump    = dump;
+        Current_status current_status   = this->current_status(device_port);
+        current_status.off_delay        = off_delay;
+        current_status.on_delay         = on_delay;
         current.insert(device_port,current_status);
     }
 

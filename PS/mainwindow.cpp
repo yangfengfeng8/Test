@@ -45,8 +45,6 @@ MainWindow::MainWindow(QWidget *parent) :
     splitter->setHandleWidth(0);
     splitter->addWidget(ui->treeWidget);
 
-    QHBoxLayout *h_layout   = new QHBoxLayout;
-
     tabWidget   = new QTabWidget();
     tabWidget->setTabsClosable(true);
     tabWidget->setStyleSheet("QTabWidget::pane{border: 1px solid green}"
@@ -60,7 +58,6 @@ MainWindow::MainWindow(QWidget *parent) :
     tabWidget->addTab(ui->minor_widget,tr("Control"));
 
     splitter->addWidget(tabWidget);
-
 
     splitter->setCollapsible(0,false);
     splitter->setCollapsible(1,false);
@@ -108,6 +105,8 @@ MainWindow::MainWindow(QWidget *parent) :
     timer->start(1000);
 
     Init_interface();
+
+    Init_control_confirmation();
 }
 
 MainWindow::~MainWindow()
@@ -134,15 +133,23 @@ void MainWindow::Init_interface()
     scheduling      = NULL;
     outlet_configuration    = NULL;
     log_event       = NULL;
+    outlet_configure_child = NULL;
+}
+
+//在使能全部打开或关闭时，给予提示信息；
+void MainWindow::Init_control_confirmation()
+{
+    control_confirmation    = new Control_Confirmation(this);
+    connect(control_confirmation,SIGNAL(send_ok(Device_Name,ON_OFF)),this,SLOT(start_all_on_off(Device_Name,ON_OFF)));
 }
 
 void MainWindow::GetPrevious_device()
 {
     QFile file("device.ini");
-
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text)){
         qDebug()<<file.errorString();
     }
+
     QString str;
     QTextStream out(&file);
     QStringList list;
@@ -158,9 +165,8 @@ void MainWindow::GetPrevious_device()
         connect(d_info,SIGNAL(set_one_off(Device_Name,int,ON_OFF)),logicAction,SIGNAL(set_on_off(Device_Name,int,ON_OFF)));
 
         for(int i=0;i<d_info->row();i++){
-            d_info->set_Current_status(i,list.at(i*3+4).toInt(),list.at(i*3+5).toInt(),0,list.at(i*3+6));
+            d_info->set_Current_status(i,list.at(i*5+4).toInt(),list.at(i*5+5).toInt(),0,list.at(i*5+6).toInt(),list.at(i*5+7).toInt(),list.at(i*5+8));
             d_info->set_connect(disconnected);
-            qDebug()<<list.at(i*2+4)<<list.at(i*2+5)<<list.at(i*2+6);
         }
         device_info.insert(d_info->name(),d_info);
 
@@ -214,8 +220,9 @@ void MainWindow::Save_Record_device()
         for(int i=0;i<device_info.value(str)->row();i++){
             current_status += tr("%1;").arg(device_info.value(str)->current_status(i).max_current);
             current_status += tr("%1;").arg(device_info.value(str)->current_status(i).min_current);
+            current_status += tr("%1;").arg(device_info.value(str)->current_status(i).on_delay);
+            current_status += tr("%1;").arg(device_info.value(str)->current_status(i).off_delay);
             current_status += device_info.value(str)->current_status(i).describe+";";
-            qDebug()<<device_info.value(str)->current_status(i).max_current<<device_info.value(str)->current_status(i).min_current<<device_info.value(str)->current_status(i).describe;
         }
         QString save;
         save    = name+";"+ip+";"+port+";"+row+";"+current_status+"\n";
@@ -586,6 +593,7 @@ void MainWindow::on_action_Alarm_Status_triggered()
     tabWidget->setCurrentWidget(alarm_status);
 }
 
+//打开Load_Management界面；
 void MainWindow::on_action_Load_Management_triggered()
 {
     if(loadManagement == NULL){
@@ -595,7 +603,7 @@ void MainWindow::on_action_Load_Management_triggered()
     tabWidget->setCurrentWidget(loadManagement);
 }
 
-//添加控制界面；
+//添加Control界面；
 void MainWindow::on_action_control_triggered()
 {
     if(control == NULL){
@@ -605,6 +613,8 @@ void MainWindow::on_action_control_triggered()
         connect(control,SIGNAL(set_Max(int,int)),this,SLOT(set_Max_eletric(int,int)));
         connect(control,SIGNAL(set_Min(int,int)),this,SLOT(set_Min_eletric(int,int)));
         connect(control,SIGNAL(set_Describe(int,QString)),this,SLOT(set_Describe(int,QString)));
+        connect(control,SIGNAL(modification(int)),this,SLOT(open_configure_child(int)));
+        connect(control,SIGNAL(set_all_on_off(int)),this,SLOT(set_all_on_off(int)));
         connect(this,SIGNAL(send_on_off_status(int,ON_OFF)),control,SLOT(get_btn_status(int,ON_OFF)));
         connect(this,SIGNAL(send_real_eletric(int,int)),control,SLOT(get_real_eletric(int,int)));
         connect(this,SIGNAL(send_Max_eletric(int,int)),control,SLOT(get_Max(int,int)));
@@ -616,6 +626,84 @@ void MainWindow::on_action_control_triggered()
     }
     tabWidget->addTab(control,"Control");
     tabWidget->setCurrentWidget(control);
+}
+
+//打开设置延时界面；
+void MainWindow::open_configure_child(int device_port)
+{
+    if(outlet_configure_child == NULL){
+        outlet_configure_child  = new Outlet_configure_child;
+        connect(outlet_configure_child,SIGNAL(send_Interval(Device_Name,int,int,int)),this,SLOT(get_on_off_delay(Device_Name,int,int,int)));
+        connect(outlet_configure_child,SIGNAL(send_Interval()),this,SLOT(get_on_off_delay()));
+    }
+    if(d_info->current_status(device_port).describe.isEmpty()){
+        outlet_configure_child->setPortName(tr("port%1:").arg(device_port));
+    }
+    else {
+        outlet_configure_child->setPortName(d_info->current_status(device_port).describe);
+    }
+    outlet_configure_child->setName(d_info->name());
+    outlet_configure_child->setInterval(d_info->current_status(device_port).on_delay,d_info->current_status(device_port).off_delay);
+    outlet_configure_child->setdevice_port(device_port);
+
+    tabWidget->addTab(outlet_configure_child,"configure outlet");
+    tabWidget->setCurrentWidget(outlet_configure_child);
+}
+
+//更新延时时间；
+void MainWindow::get_on_off_delay(Device_Name name, int device_port, int on_delay, int off_delay)
+{
+    device_info.value(name)->change_Current_status(name,device_port,on_delay,off_delay);
+    tabWidget->removeTab(tabWidget->indexOf(outlet_configure_child));
+    if(d_info->name() == name){
+        outlet_configuration->set_on_delay(device_port,on_delay);
+        outlet_configuration->set_off_delay(device_port,off_delay);
+    }
+}
+
+//获取延时时间后，关闭延时界面；
+void MainWindow::get_on_off_delay()
+{
+    tabWidget->removeTab(tabWidget->indexOf(outlet_configure_child));
+}
+
+//判断全部是打开或者关闭。
+void MainWindow::set_all_on_off(int index)
+{
+    switch(index){
+    case 0:
+        control_confirmation->set_nothing(d_info->name());control_confirmation->exec();break;
+    case 1:
+        control_confirmation->set_hint(d_info->name(),d_info->name(),d_info->row());
+        for(int i=0;i<d_info->row();i++){
+            control_confirmation->set_on_delay(i+1,0);
+        }
+        control_confirmation->exec();break;
+    case 2:
+        control_confirmation->set_hint(d_info->name(),d_info->name(),d_info->row());
+        for(int i=0;i<d_info->row();i++){
+            control_confirmation->set_on_delay(i+1,d_info->current_status(i).on_delay);
+        }
+        control_confirmation->exec();break;
+    case 3:
+        control_confirmation->set_hint(d_info->name(),d_info->row());
+        for(int i=0;i<d_info->row();i++){
+            control_confirmation->set_off_delay(i+1,0);
+        }
+        control_confirmation->exec();break;
+    case 4:
+        control_confirmation->set_hint(d_info->name(),d_info->row());
+        for(int i=0;i<d_info->row();i++){
+            control_confirmation->set_off_delay(i+1,d_info->current_status(i).off_delay);
+        }
+        control_confirmation->exec();break;
+    }
+}
+
+//开始向底层发送数据；
+void MainWindow::start_all_on_off(Device_Name name, ON_OFF flag)
+{
+
 }
 
 void MainWindow::on_actionConfiguration_triggered()
@@ -683,14 +771,13 @@ void MainWindow::on_actionChang_Net_triggered()
     qDebug()<<tr("on action change net triggered!!!");
 }
 
+//添加用户；
 void MainWindow::on_actionAdd_User_triggered()
 {
     AddUser *adduser    = new AddUser(this);
     connect(adduser,SIGNAL(userInfo(QString&,QString&)),this,SLOT(Add_user(QString&,QString&)));
 
     adduser->exec();
-
-    qDebug()<<tr("on action add user triggered!!!");
 }
 
 void MainWindow::on_actionDelete_User_triggered()
@@ -777,7 +864,6 @@ void MainWindow::on_treeWidget_customContextMenuRequested(const QPoint &pos)
 {
     item   = ui->treeWidget->itemAt(pos);
     if(d_info == NULL){
-
         device_child_menu->exec(QCursor::pos());
         return ;
     }
@@ -796,8 +882,8 @@ void MainWindow::on_action_add_device_triggered()
 {
     d_info      = new Device_Info("","",0,0,this);
 
-    connect(this,SIGNAL(all_btn_on_off(Device_Name,int,ON_OFF)),d_info,SLOT(set_all_btn(Device_Name,int,ON_OFF)));
-    connect(d_info,SIGNAL(set_one_off(Device_Name,int,ON_OFF)),logicAction,SIGNAL(set_on_off(Device_Name,int,ON_OFF)));
+//    connect(this,SIGNAL(all_btn_on_off(Device_Name,int,ON_OFF)),d_info,SLOT(set_all_btn(Device_Name,int,ON_OFF)));
+//    connect(d_info,SIGNAL(set_one_off(Device_Name,int,ON_OFF)),logicAction,SIGNAL(set_on_off(Device_Name,int,ON_OFF)));
 
     add_device  = new Add_device(this);
 
@@ -936,6 +1022,7 @@ void MainWindow::get_user()
     share_userinfo->detach();
 }
 
+//更新右下角时间；
 void MainWindow::timerout()
 {
     QDateTime datetime;
@@ -1041,18 +1128,3 @@ void MainWindow::on_treeWidget_itemClicked(QTreeWidgetItem *item, int column)
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

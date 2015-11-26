@@ -3,6 +3,7 @@
 #include <QAbstractItemModel>
 #include <QDebug>
 #include <QSplitter>
+#include "./Device_Manager/outlet_configure_child.h"
 
 Control::Control(QWidget *parent) :
     QWidget(parent),
@@ -29,6 +30,8 @@ Control::Control(QWidget *parent) :
     ui->verticalLayout->addWidget(splitter);
 
     Init_tabWidget(8);
+
+    index   = 0;
 }
 
 Control::~Control()
@@ -76,7 +79,7 @@ void Control::Init_tabWidget(int row,int column)
         widget->setLayout(h_layout);
         ui->control_tableWidget->setCellWidget(i,3,widget);
 
-        SearchPushButton *search    = new SearchPushButton(i,this);
+        PushButtonPrivat *search    = new PushButtonPrivat(i,this);
 
         search->setFont(font);
         search->setText(tr("query"));
@@ -91,23 +94,39 @@ void Control::Init_tabWidget(int row,int column)
         h_layout_3->addWidget(search);
         widget_3->setLayout(h_layout_3);
         ui->control_tableWidget->setCellWidget(i,4,widget_3);
+
+        PushButtonPrivat *modification    = new PushButtonPrivat(i,this);
+
+        modification->setFont(font);
+        modification->setText(tr("amend"));
+        modification->setEnabled(true);
+        modification->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+        modification->setMaximumSize(55,40);
+        modification->setMinimumSize(55,40);
+        connect(modification,SIGNAL(button_status(int)),this,SIGNAL(modification(int)));
+
+        QWidget *widget_4     = new QWidget;
+        QHBoxLayout *h_layout_4   = new QHBoxLayout;
+        h_layout_4->addWidget(modification);
+        widget_4->setLayout(h_layout_4);
+        ui->control_tableWidget->setCellWidget(i,7,widget_4);
     }
 }
 
 void Control::on_Control_All_Trigger_clicked()
 {
-
+    emit set_all_on_off(index);
 }
 
 void Control::on_Control_All_ComboBox_currentIndexChanged(int index)
 {
-
+    this->index = index;
 }
 
 void Control::on_control_tableWidget_itemChanged(QTableWidgetItem *item)
 {
     switch (item->column()){
-    case 5: emit set_Max(item->row(),item->text().toInt());
+    case 5: emit set_Max(item->row(),(item->text().toInt() * 100));
         break;
     case 6: emit set_Min(item->row(),item->text().toInt());
         break;
@@ -118,12 +137,13 @@ void Control::on_control_tableWidget_itemChanged(QTableWidgetItem *item)
 
 void Control::get_Max(int device_port, int val)
 {
-    model->setData(model->index(device_port,5),(uint)val);
+    model->setData(model->index(device_port,5),(double)val);
+    max.insert(device_port,(double)val);
 }
 
 void Control::get_Min(int device_port, int val)
 {
-    model->setData(model->index(device_port,6),(uint)val);
+    model->setData(model->index(device_port,6),(double)val);
 }
 
 void Control::get_Describe(int device_port, QString str)
@@ -134,7 +154,6 @@ void Control::get_Describe(int device_port, QString str)
 void Control::get_btn_status(int device_port, ON_OFF status)
 {
     if(status == ON){
-        qDebug()<<device_port;
         ui->control_tableWidget->cellWidget(device_port,1)->findChild<QLabel *>(tr("%1").arg(device_port))->setPixmap(pix_on);
     }
     else {
@@ -153,3 +172,4 @@ void Control::get_row(int row)
         ui->control_tableWidget->setRowHidden(i,true);
     }
 }
+

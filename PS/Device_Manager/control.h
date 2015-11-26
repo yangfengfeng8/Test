@@ -52,11 +52,19 @@ signals:
     void set_btn_status(int device_port);
 
     void search_btn_status(int device_port);
+
+    void modification(int device_port);
+
+    void set_all_on_off(int status);
+
 private:
     Ui::Control *ui;
 
     int row;
     int column;
+    int index;
+    QMap<int,double> max;
+    QMap<int,double> min;
 
     QPixmap pix_on;
     QPixmap pix_off;

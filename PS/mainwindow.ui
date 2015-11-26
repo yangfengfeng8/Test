@@ -196,7 +196,6 @@
     </property>
     <addaction name="action_OverView"/>
     <addaction name="action_Alarm_Status"/>
-    <addaction name="action_Outlet_Status"/>
     <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menu_V">
@@ -206,7 +205,6 @@
     <addaction name="action_Load_Management"/>
     <addaction name="action_control"/>
     <addaction name="actionConfiguration"/>
-    <addaction name="actionScheduling"/>
    </widget>
    <widget class="QMenu" name="menu_S">
     <property name="title">

@@ -17,6 +17,8 @@
 #include "Device_Manager/outlet_configuration.h"
 #include "Device_Manager/scheduling.h"
 #include "Event/log_event.h"
+#include "./Device_Manager/outlet_configure_child.h"
+#include "./Device_Manager/control_confirmation.h"
 
 namespace Ui {
 class MainWindow;
@@ -33,6 +35,8 @@ public:
     void Init_curve_widget();
 
     void Init_interface();
+
+    void Init_control_confirmation();
 
     void GetPrevious_device();
 
@@ -140,6 +144,7 @@ private slots:
 
     void close_tabWidget(int index);
 
+    //打开相关页面;
     void on_action_OverView_triggered();
 
     void on_action_Alarm_Status_triggered();
@@ -159,6 +164,16 @@ private slots:
     void set_Min_eletric(int device_port,int val);
 
     void set_Describe(int device_port,QString str);
+
+    void open_configure_child(int device_port);
+
+    void get_on_off_delay(Device_Name name,int device_port,int on_delay,int off_delay);
+
+    void get_on_off_delay();
+
+    void set_all_on_off(int index);
+
+    void start_all_on_off(Device_Name name,ON_OFF flag);
 
 signals:
     void send_to_setMaxEle(QStringList &);
@@ -198,12 +213,18 @@ signals:
     //更新tabwidget表格大小；
     void send_row(int row);
 
+    //更新tabwidget表格名称；
+    void send_name(Device_Name name);
+
     //更新tabwidget的端口描述信息；
     void send_Describe(int device_port,QString str);
 
     void all_btn_on_off(Device_Name name,int interval,ON_OFF on_off);
 
     void change_name(Device_Name name,int row,QList<int> ele_max);
+
+    //Outlet_configuration 更新数据；
+
 
 private:
     Ui::MainWindow *ui;
@@ -255,6 +276,9 @@ private:
     Outlet_Configuration *outlet_configuration;
     Scheduling *scheduling;
     Log_Event *log_event;
+
+    Outlet_configure_child *outlet_configure_child;
+    Control_Confirmation *control_confirmation;
 };
 
 #endif // MAINWINDOW_H
