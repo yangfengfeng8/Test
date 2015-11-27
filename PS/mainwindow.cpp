@@ -708,7 +708,7 @@ void MainWindow::set_all_on_off(int index)
 //开始向底层发送数据；
 void MainWindow::start_all_on_off(Device_Name name, ON_OFF flag)
 {
-    emit all_btn_on_off(name,flag);
+//    emit all_btn_on_off(name,flag);
 }
 
 //打开Control_confirmation界面；

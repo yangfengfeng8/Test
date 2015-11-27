@@ -15,8 +15,19 @@ public:
     explicit Alarm_Status(QWidget *parent = 0);
     ~Alarm_Status();
 
+    void get_alarm_information(Device_Name name, int device_port, Alarm alarm);
+
+private slots:
+    void on_checkBox_buzzer_stateChanged(int arg1);
+
+    void on_buzzer_close_clicked();
+
+signals:
+    void close_buzzer();
+
 private:
     Ui::Alarm_Status *ui;
+    int index;
 };
 
 #endif // ALARM_STATUS_H

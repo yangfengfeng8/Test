@@ -325,7 +325,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_7">
+         <widget class="QLabel" name="label_power">
           <property name="styleSheet">
            <string notr="true">QLabel {
 	padding-left: 10px;
@@ -407,7 +407,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_13">
+         <widget class="QLabel" name="label_uptime">
           <property name="styleSheet">
            <string notr="true">QLabel {
 	padding-left: 10px;
@@ -486,7 +486,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QTableWidget" name="tableWidget_2">
+       <widget class="QTableWidget" name="tableWidget">
         <property name="styleSheet">
          <string notr="true">QTableView, QHeaderView, QTableView::item {
     background: white;
@@ -519,7 +519,7 @@ QHeaderView::section:horizontal, QTableCornerButton::section {
          <enum>Qt::SolidLine</enum>
         </property>
         <property name="rowCount">
-         <number>4</number>
+         <number>10</number>
         </property>
         <property name="columnCount">
          <number>3</number>
@@ -536,6 +536,12 @@ QHeaderView::section:horizontal, QTableCornerButton::section {
         <attribute name="verticalHeaderStretchLastSection">
          <bool>false</bool>
         </attribute>
+        <row/>
+        <row/>
+        <row/>
+        <row/>
+        <row/>
+        <row/>
         <row/>
         <row/>
         <row/>

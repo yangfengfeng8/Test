@@ -16,6 +16,8 @@
 #include <QTimer>
 #include <QObject>
 
+enum Alarm{Low_Alarm,Normal,OverLoad};//低于最小值，正常，超载；
+
 class Timer_New : public QObject
 {
     Q_OBJECT
