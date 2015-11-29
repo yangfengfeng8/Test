@@ -42,6 +42,10 @@ private slots:
 
     void get_row(int row);
 
+    void display_operation(Device_Name name,QString str);
+
+    void display_operation(Device_Name name,QString str,QString target_name);
+
 signals:
     void set_Max(int device_port,int val);
 
@@ -51,7 +55,7 @@ signals:
 
     void set_btn_status(int device_port);
 
-    void search_btn_status(int device_port);
+    void search_information(int device_port);
 
     void modification(int device_port);
 

@@ -18,40 +18,6 @@
 
 enum Alarm{Low_Alarm,Normal,OverLoad};//低于最小值，正常，超载；
 
-class Timer_New : public QObject
-{
-    Q_OBJECT
-public:
-    Timer_New(QObject *parent = 0)
-        : QObject(parent)
-    {
-    }
-    ~Timer_New(){}
-
-
-signals:
-    void time_out(int device_port);
-
-public slots:
-    void timeout(){
-        emit time_out(device_port);
-        timer.stop();
-    }
-
-public:
-    void set_info(const int device_port,const int interval){
-        this->device_port   = device_port;
-        this->Interval      = interval;
-        timer.start(Interval);
-        connect(&timer,SIGNAL(timeout()),this,SLOT(timeout()));
-    }
-private:
-    int device_port;
-    int Interval;
-    QTimer timer;
-};
-
-
 enum ON_OFF{OFF,ON};
 enum Connected{connected,disconnected};
 
@@ -73,24 +39,38 @@ typedef struct {
     int off_delay;
 }Current_status;
 
+class Timer_New : public QObject
+{
+    Q_OBJECT
+public:
+    Timer_New(int device_port,QObject *parent = 0);
+    ~Timer_New(){}
+
+    void set_info(int interval);
+
+signals:
+    void time_out(int device_port);
+
+public slots:
+    void timeout();
+
+private:
+    int device_port;
+    int Interval;
+    QTimer timer;
+};
+
 
 class PushButtonPrivat : public QPushButton
 {
     Q_OBJECT
 public:
-    PushButtonPrivat(int device_port, QWidget *parent)
-        : QPushButton(parent)
-        ,device_port(device_port)
-    {
-        connect(this,SIGNAL(clicked(bool)),this,SLOT(clicked()));
-    }
+    PushButtonPrivat(int device_port, QWidget *parent);
 signals:
     void button_status(int);
 
 public slots:
-    void clicked(){
-        emit button_status(device_port);
-    }
+    void clicked();
 
 private:
     int device_port;
@@ -100,16 +80,14 @@ class Device_Info : public QObject
 {
     Q_OBJECT
 public:
-    Device_Info(QString IP,QString name,int port,int row,QObject *parent = 0)
-        : QObject(parent),IP(IP),Name(name),Port(port),Row(row),parent(parent)
-    {
-        Item    = new QTreeWidgetItem;
-        Item->setText(0,name);
-        Item->setText(1,IP);
+    Device_Info(QString IP,QString name,int port,int row,QObject *parent = 0);
 
-        Connect = disconnected;
+    ~Device_Info(){
+        for(int i=0;i<Row;i++){
+
+        }
+
     }
-    ~Device_Info(){}
 
     inline QTreeWidgetItem* item(){return Item;}
 
@@ -178,36 +156,15 @@ public:
     inline int size(){return current.size();}
 
 signals:
+    //设置端口状态；
     void set_one_off(Device_Name name,int device_port,ON_OFF);
 
 public slots:
-    void timeout(int device_port){
-        emit set_one_off(Name,device_port,on_off);
-    }
+    void timeout(int device_port);
 
-    void set_all_btn(Device_Name name,ON_OFF on_off){
-        if(name != Name){
-            return ;
-        }
-        if(Connect == disconnected){
-            QMessageBox::warning((QWidget*)parent,tr("警告"),tr("%1设备没有连接网络，请先连接网络！").arg(name),tr("确定"));
-            return ;
-        }
-        if(on_off == ON){
-            for(int i=0;i<Row;i++){
-                QObject::connect(&on_timer.at(i),SIGNAL(time_out(int)),this,SLOT(timeout(int)));
-                //timer = on_timer.at(i);
-                timer.set_info(1,1);
-            }
-        }
-        else {
-            for(int i=0;i<Row;i++){
-                QObject::connect(&off_timer.at(i),SIGNAL(time_out(int)),this,SLOT(timeout(int)));
-            }
-        }
-        this->on_off    = on_off;
-    }
+    void set_all_btn(Device_Name name, int Is_delay, ON_OFF on_off);
 
+    void connected_success(Device_Name name);
 
 private:
     QObject *parent;
@@ -219,9 +176,8 @@ private:
     QTreeWidgetItem *Item;
     Connected Connect;
     QMap<int,Current_status> current;
-    QList<Timer_New> on_timer;
-    QList<Timer_New> off_timer;
-    Timer_New timer;
+    QMap<int,Timer_New*> on_timer;
+    QMap<int,Timer_New*> off_timer;
 };
 
 #endif // BASE

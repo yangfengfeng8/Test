@@ -25,15 +25,15 @@ Alarm_Status::~Alarm_Status()
 void Alarm_Status::get_alarm_information(Device_Name name, int device_port, Alarm alarm)
 {
     switch(alarm){
-    case Low_Alarm:ui->home_label_alarms_2->setText(tr("%1 of the %2 port current value is lower than the minimum current value!!!").arg(device_port).arg(name));
+    case Low_Alarm:ui->home_label_alarm_status_2->setText(tr("%1 of the %2 port current value is lower than the minimum current value!!!").arg(device_port).arg(name));
         if(index){
             ui->buzzer_close->setEnabled(true);
         }
         break;
-    case Normal:ui->home_label_alarms_2->setText("No Alarms Present");
+    case Normal:ui->home_label_alarm_status_2->setText("No Alarms Present");
         ui->buzzer_close->setEnabled(false);
         break;
-    case OverLoad:ui->home_label_alarms_2->setText(tr("%1 of the %2 port current value is more than the maximum current value!!!").arg(device_port).arg(name));
+    case OverLoad:ui->home_label_alarm_status_2->setText(tr("%1 of the %2 port current value is more than the maximum current value!!!").arg(device_port).arg(name));
         if(index){
             ui->buzzer_close->setEnabled(true);
         }
@@ -50,6 +50,7 @@ void Alarm_Status::on_checkBox_buzzer_stateChanged(int arg1)
     else {
         ui->checkBox_buzzer->setText("Disenable Buzzer");
     }
+    emit change_buzzer_status(arg1);
 }
 
 void Alarm_Status::on_buzzer_close_clicked()

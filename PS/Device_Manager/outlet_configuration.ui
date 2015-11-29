@@ -137,7 +137,7 @@
            <item>
             <widget class="QLabel" name="label1">
              <property name="text">
-              <string>hshdh</string>
+              <string>Port1</string>
              </property>
             </widget>
            </item>
@@ -196,7 +196,7 @@
            <item>
             <widget class="QLabel" name="label2">
              <property name="text">
-              <string>Outlet3</string>
+              <string>Port2</string>
              </property>
             </widget>
            </item>
@@ -255,7 +255,7 @@
            <item>
             <widget class="QLabel" name="label3">
              <property name="text">
-              <string>Outlet4</string>
+              <string>Port3</string>
              </property>
             </widget>
            </item>
@@ -314,7 +314,7 @@
            <item>
             <widget class="QLabel" name="label4">
              <property name="text">
-              <string>Outlet5</string>
+              <string>Port4</string>
              </property>
             </widget>
            </item>
@@ -373,7 +373,7 @@
            <item>
             <widget class="QLabel" name="label5">
              <property name="text">
-              <string>Outlet6</string>
+              <string>Port5</string>
              </property>
             </widget>
            </item>
@@ -432,7 +432,7 @@
            <item>
             <widget class="QLabel" name="label6">
              <property name="text">
-              <string>Outlet7</string>
+              <string>Port6</string>
              </property>
             </widget>
            </item>
@@ -491,7 +491,7 @@
            <item>
             <widget class="QLabel" name="label8">
              <property name="text">
-              <string>Outlet8</string>
+              <string>Port7</string>
              </property>
             </widget>
            </item>
@@ -550,7 +550,7 @@
            <item>
             <widget class="QLabel" name="label9">
              <property name="text">
-              <string>Outlet2</string>
+              <string>Port8</string>
              </property>
             </widget>
            </item>

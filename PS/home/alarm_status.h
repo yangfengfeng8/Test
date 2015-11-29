@@ -2,6 +2,7 @@
 #define ALARM_STATUS_H
 
 #include <QWidget>
+#include "base.h"
 
 namespace Ui {
 class Alarm_Status;
@@ -24,6 +25,8 @@ private slots:
 
 signals:
     void close_buzzer();
+
+    void change_buzzer_status(int index);
 
 private:
     Ui::Alarm_Status *ui;

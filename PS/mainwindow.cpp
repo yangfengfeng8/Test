@@ -19,6 +19,7 @@
 #include <QDataStream>
 #include <QTabWidget>
 #include <QPalette>
+#include <QToolButton>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -30,6 +31,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     pix_on.load(":/image/green.png");
     pix_off.load(":/image/gray.png");
+
+    come_true_widget();
 
     Init_TreeWidget();
 
@@ -59,6 +62,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     splitter->addWidget(tabWidget);
 
+    splitter->addWidget(ui->widget);
+
     splitter->setCollapsible(0,false);
     splitter->setCollapsible(1,false);
 
@@ -76,20 +81,30 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->textBrowser->setContextMenuPolicy(Qt::NoContextMenu);
 
     logicAction = new LogicAction(this);
-    connect(this,SIGNAL(connected_status(Device_Name&,QString&,int,int,Connected)),logicAction,SLOT(connect_ready(Device_Name&,QString&,int,int,Connected)));
-    connect(logicAction,SIGNAL(connect_error(Device_Name&,QString&)),this,SLOT(connected_fail(Device_Name&,QString&)));
 
+    //处理连接状态；
+    connect(logicAction,SIGNAL(connect_error(Device_Name&,QString&)),this,SLOT(connected_fail(Device_Name&,QString&)));
+    connect(logicAction,SIGNAL(connect_successed(Device_Name)),this,SLOT(connect_successed(Device_Name)));
+    connect(logicAction,SIGNAL(disconnect_successed(Device_Name)),this,SLOT(disconnect_successed(Device_Name)));
+
+    //绑定设置按钮，最大值，最小值的信号与槽；
     connect(logicAction,SIGNAL(return_one_on_off(Device_Name,int,ON_OFF)),this,SLOT(get_button_status(Device_Name,int,ON_OFF)));
     connect(logicAction,SIGNAL(return_one_actual_eletric(Device_Name,int,int)),this,SLOT(get_actual_eletric(Device_Name,int,int)));
     connect(logicAction,SIGNAL(return_one_Max_eletric(Device_Name,int,int)),this,SLOT(get_Max_eletric(Device_Name,int,int)));
+
+    //获取向下位机操作的信息，以及下位机返回的数据；在控制端中显示命令；
+    connect(logicAction,SIGNAL(return_operation(Device_Name,QString)),this,SLOT(get_operation(Device_Name,QString)));
+    connect(logicAction,SIGNAL(return_operation(Device_Name,QString,QString)),this,SLOT(get_operation(Device_Name,QString,QString)));
 
 #ifdef Enable_Curve
     connect(logicAction,SIGNAL(return_one_actual_eletric(Device_Name,int,int)),curve_widget,SLOT(get_actual(Device_Name,int,int)));
     connect(logicAction,SIGNAL(return_one_Max_eletric(Device_Name,int,int)),curve_widget,SLOT(get_max(Device_Name,int,int)));
 #endif
 
+    connect(this,SIGNAL(connected_status(Device_Name&,QString&,int,int,Connected)),logicAction,SLOT(connect_ready(Device_Name&,QString&,int,int,Connected)));
     connect(this,SIGNAL(search_Max_eletric(Device_Name)),logicAction,SIGNAL(search_Max_eletric(Device_Name)));
     connect(this,SIGNAL(search_on_off(Device_Name)),logicAction,SIGNAL(search_on_off(Device_Name)));
+    connect(this,SIGNAL(search_device_information(Device_Name,int)),logicAction,SIGNAL(search_device_information(Device_Name,int)));
     connect(this,SIGNAL(set_on_off(Device_Name,int,ON_OFF)),logicAction,SIGNAL(set_on_off(Device_Name,int,ON_OFF)));
 
     GetPrevious_device();
@@ -107,6 +122,10 @@ MainWindow::MainWindow(QWidget *parent) :
     Init_interface();
 
     Init_control_confirmation();
+
+    //操作日志；
+    log_event   = new Log_Event;
+    connect(this,SIGNAL(save_info(Device_Name,QString)),log_event,SLOT(save_log(Device_Name,QString)));
 }
 
 MainWindow::~MainWindow()
@@ -140,7 +159,20 @@ void MainWindow::Init_interface()
 void MainWindow::Init_control_confirmation()
 {
     control_confirmation    = new Control_Confirmation(this);
-    connect(control_confirmation,SIGNAL(send_ok(Device_Name,ON_OFF)),this,SLOT(start_all_on_off(Device_Name,ON_OFF)));
+    connect(control_confirmation,SIGNAL(send_ok(Device_Name,int,ON_OFF)),this,SLOT(start_all_on_off(Device_Name,int,ON_OFF)));
+}
+
+//自定义窗口；后续实现；
+void MainWindow::come_true_widget()
+{
+    //获取最小化、关闭按钮图标
+    QPixmap closePix = style()->standardPixmap(QStyle::SP_TitleBarCloseButton);
+
+    //设置最小化、关闭按钮图标
+    ui->close_btn->setIcon(closePix);
+    ui->close_btn->setToolTip("close the widget");
+
+    ui->treeWidget_3->setHeaderHidden(true);
 }
 
 void MainWindow::GetPrevious_device()
@@ -448,6 +480,9 @@ void MainWindow::Change_tableWidget()
         ui->tableWidget->model()->setData(ui->tableWidget->model()->index(i,4),d_info->current_status(i).describe);
         ele_max.append(d_info->current_status(i).max_current);
 
+        if(d_info->current_status(i).describe.isEmpty()){
+            d_info->change_Current_status(i,tr("Port%1").arg(i+1));
+        }
         emit send_Describe(i,d_info->current_status(i).describe);
         emit send_Max_eletric(i,d_info->current_status(i).max_current);
         emit send_Min_eletric(i,d_info->current_status(i).min_current);
@@ -595,6 +630,8 @@ void MainWindow::on_action_Alarm_Status_triggered()
 {
     if(alarm_status == NULL){
         alarm_status    = new Alarm_Status;
+        connect(alarm_status,SIGNAL(change_buzzer_status(int)),this,SLOT(save_info_change_buzzer(int)));
+        connect(alarm_status,SIGNAL(close_buzzer()),this,SLOT(close_buzzer()));
     }
     tabWidget->addTab(alarm_status,"Alarm Status");
     tabWidget->setCurrentWidget(alarm_status);
@@ -616,7 +653,7 @@ void MainWindow::on_action_control_triggered()
     if(control == NULL){
         control    = new Control;
         connect(control,SIGNAL(set_btn_status(int)),this,SLOT(button_status(int)));
-        connect(control,SIGNAL(search_btn_status(int)),this,SLOT(search_btn_status(int)));
+        connect(control,SIGNAL(search_information(int)),this,SLOT(search_information(int)));
         connect(control,SIGNAL(set_Max(int,int)),this,SLOT(set_Max_eletric(int,int)));
         connect(control,SIGNAL(set_Min(int,int)),this,SLOT(set_Min_eletric(int,int)));
         connect(control,SIGNAL(set_Describe(int,QString)),this,SLOT(set_Describe(int,QString)));
@@ -628,6 +665,8 @@ void MainWindow::on_action_control_triggered()
         connect(this,SIGNAL(send_Min_eletric(int,int)),control,SLOT(get_Min(int,int)));
         connect(this,SIGNAL(send_Describe(int,QString)),control,SLOT(get_Describe(int,QString)));
         connect(this,SIGNAL(send_row(int)),control,SLOT(get_row(int)));
+        connect(this,SIGNAL(send_display_operation(Device_Name,QString)),control,SLOT(display_operation(Device_Name,QString)));
+        connect(this,SIGNAL(send_display_operation(Device_Name,QString,QString)),control,SLOT(display_operation(Device_Name,QString,QString)));
         Change_tableWidget();
     }
     tabWidget->addTab(control,"Control");
@@ -661,9 +700,12 @@ void MainWindow::get_on_off_delay(Device_Name name, int device_port, int on_dela
 {
     device_info.value(name)->change_Current_status(name,device_port,on_delay,off_delay);
     tabWidget->removeTab(tabWidget->indexOf(outlet_configure_child));
-    qDebug()<<"error";
     emit send_Control_configuration_on_delay(device_port,on_delay);
     emit send_Control_configuration_off_delay(device_port,off_delay);
+
+    QString info;
+    info    = tr("update the %1's delay time!").arg(device_info.value(name)->current_status(device_port).describe);
+    emit save_info(name,info);
 }
 
 //获取延时时间后，关闭延时界面；
@@ -681,7 +723,7 @@ void MainWindow::set_all_on_off(int index)
     case 1:
         control_confirmation->set_hint(d_info->name(),d_info->name(),d_info->row());
         for(int i=0;i<d_info->row();i++){
-            control_confirmation->set_on_delay(i+1,0);
+            control_confirmation->set_on_delay(i+1);
         }
         control_confirmation->exec();break;
     case 2:
@@ -693,7 +735,7 @@ void MainWindow::set_all_on_off(int index)
     case 3:
         control_confirmation->set_hint(d_info->name(),d_info->row());
         for(int i=0;i<d_info->row();i++){
-            control_confirmation->set_off_delay(i+1,0);
+            control_confirmation->set_off_delay(i+1);
         }
         control_confirmation->exec();break;
     case 4:
@@ -706,9 +748,53 @@ void MainWindow::set_all_on_off(int index)
 }
 
 //开始向底层发送数据；
-void MainWindow::start_all_on_off(Device_Name name, ON_OFF flag)
+void MainWindow::start_all_on_off(Device_Name name, int Is_delay,ON_OFF flag)
 {
-//    emit all_btn_on_off(name,flag);
+    //确保当前设备已连接网络。
+    if(d_info->connect() == disconnected){
+        QMessageBox::warning(this,tr("%1 Warning").arg(name),tr("To perform this operation, please ensure that the network is connected"));
+        return ;
+    }
+    emit all_btn_on_off(name,Is_delay,flag);
+}
+
+//获取操作数据；
+void MainWindow::get_operation(Device_Name name, QString str)
+{
+    if(d_info->name() != name){
+        return ;
+    }
+    emit send_display_operation(name,str);
+}
+
+//获取操作数据，这是服务器返回的数据；
+void MainWindow::get_operation(Device_Name name, QString str, QString target_name)
+{
+    if(d_info->name() != name){
+        return ;
+    }
+    emit send_display_operation(name,str,target_name);
+    //    emit all_btn_on_off(name,flag);
+}
+
+//存储蜂鸣器的改变状态；
+void MainWindow::save_info_change_buzzer(int index)
+{
+    QString str;
+    if(index){
+        str = "Enable buzzer";
+    }
+    else {
+        str = "DisEnable buzzer";
+    }
+    emit save_info(d_info->name(),str);
+}
+
+void MainWindow::close_buzzer()
+{
+    QString info;
+    info    = tr("close buzzer");
+    emit save_info(d_info->name(),info);
 }
 
 //打开Control_confirmation界面；
@@ -720,6 +806,7 @@ void MainWindow::on_actionConfiguration_triggered()
         connect(this,SIGNAL(send_Control_configuration_row(int)),outlet_configuration,SLOT(set_row(int)));
         connect(this,SIGNAL(send_Control_configuration_on_delay(int,int)),outlet_configuration,SLOT(set_on_delay(int,int)));
         connect(this,SIGNAL(send_Control_configuration_off_delay(int,int)),outlet_configuration,SLOT(set_off_delay(int,int)));
+        Change_tableWidget();
     }
     tabWidget->addTab(outlet_configuration,"Outlet Configuration");
     tabWidget->setCurrentWidget(outlet_configuration);
@@ -734,11 +821,9 @@ void MainWindow::on_actionScheduling_triggered()
     tabWidget->setCurrentWidget(scheduling);
 }
 
+//打开事件日志；
 void MainWindow::on_actionLog_event_triggered()
 {
-    if(log_event == NULL){
-        log_event   = new Log_Event;
-    }
     tabWidget->addTab(log_event,"Log Event");
     tabWidget->setCurrentWidget(log_event);
 }
@@ -746,19 +831,57 @@ void MainWindow::on_actionLog_event_triggered()
 //设置电流最大值；
 void MainWindow::set_Max_eletric(int device_port, int val)
 {
+    //提示更改失败，原因：网络没有连接；或者不能输入负值；
+    if((d_info->connect() == disconnected) || (val < 0)){
+        QMessageBox::warning(this,tr("The reason for the failure of %1 settings is :").arg(d_info->name()),tr("The network is not connected or the input is not valid."));
+        emit send_Max_eletric(device_port,d_info->current_status(device_port).max_current);
+        return ;
+    }
+    if((d_info->current_status(device_port).min_current) > val){
+        QMessageBox::warning(this,tr("The reason for the failure of %1 settings is :").arg(d_info->name()),tr("The maximum input can not be less than the minimum Value"));
+        emit send_Max_eletric(device_port,d_info->current_status(device_port).max_current);
+        return ;
+    }
     emit set_Max_eletric(d_info->name(),device_port,val);
+    QString info;
+    info    = tr("set the Max eletric %1A").arg(val);
+    emit save_info(d_info->name(),info);
 }
 
 //设置电流最小值；
 void MainWindow::set_Min_eletric(int device_port, int val)
 {
+    //提示更改失败，原因：网络没有连接；或者不能输入负值；
+    if((d_info->connect() == disconnected) || (val < 0)){
+        QMessageBox::warning(this,tr("The reason for the failure of %1 settings is :").arg(d_info->name()),tr("The network is not connected or the input is not valid."));
+        emit send_Min_eletric(device_port,d_info->current_status(device_port).min_current);
+        return ;
+    }
+    if((d_info->current_status(device_port).min_current) > val){
+        QMessageBox::warning(this,tr("The reason for the failure of %1 settings is :").arg(d_info->name()),tr("The minimum input value can not exceed the maximum value."));
+        emit send_Min_eletric(device_port,d_info->current_status(device_port).min_current);
+        return ;
+    }
     emit set_Min_eletric(d_info->name(),device_port,val);
+    QString info;
+    info    = tr("set the Min eletric %1A").arg(val);
+    emit save_info(d_info->name(),info);
 }
 
 //设置端口描述信息；
 void MainWindow::set_Describe(int device_port, QString str)
 {
+    //提示更改失败，原因：网络没有连接；或者没有输入有效字符；
+    if((d_info->connect() == disconnected) || str.isEmpty()){
+        QMessageBox::warning(this,tr("The reason for the failure of %1 settings is :").arg(d_info->name()),tr("The network is not connected or entered an invalid character."));
+        emit send_Describe(device_port,d_info->current_status(device_port).describe);
+        return ;
+    }
     d_info->change_Current_status(device_port,str);
+
+    QString info;
+    info    = tr("change the device name");
+    emit save_info(d_info->name(),info);
 }
 
 void MainWindow::on_action_Device_triggered()
@@ -769,16 +892,14 @@ void MainWindow::on_action_Device_triggered()
 void MainWindow::on_actionChang_Net_triggered()
 {
     if(d_info->connect() == connected){
-        QMessageBox::warning(this,tr("%1警告").arg(d_info->name()),tr("请先断开网络连接，在更改%1设备网络").arg(d_info->name()),tr("确定"));
+        QMessageBox::warning(this,tr("%1 Warning").arg(d_info->name()),tr("When change the network equipment, please ensure that the network has been disconnected."));
         return ;
     }
 
     Changedevice *changedevice   = new Changedevice(device_info,this);
     connect(changedevice,SIGNAL(change_data(QString&,QString&,QString&,int&)),this,SLOT(change_device(QString&,QString&,QString&,int&)));
 
-    changedevice->exec();
-
-    qDebug()<<tr("on action change net triggered!!!");
+    changedevice->exec();  
 }
 
 //添加用户；
@@ -821,6 +942,7 @@ void MainWindow::on_actionCheck_Power_triggered()
     emit search_Max_eletric(d_info->name());
 }
 
+//暂时已舍去此功能；
 void MainWindow::on_action_btn_triggered()
 {
     if(d_info->connect() == disconnected){
@@ -843,6 +965,7 @@ void MainWindow::on_action_all_btn_triggered()
 //版本信息；
 void MainWindow::on_actionAbout_triggered()
 {
+    ui->widget->show();
     qDebug()<<tr("on action about triggered!!!");
 }
 
@@ -918,6 +1041,10 @@ void MainWindow::on_action_add_device_triggered()
     action_rename->setEnabled(true);
     action_disconnect->setEnabled(false);
 
+    QString info;
+    info    = tr("add new device");
+    emit save_info(d_info->name(),info);
+
     delete add_device;
 }
 //删除设备；
@@ -927,7 +1054,18 @@ void MainWindow::on_action_del_device_triggered()
         return ;
     }
 
+    //删除设备时，提示网络设备没有断开；
+
+    if(d_info->connect() == connected){
+        QMessageBox::warning(this,tr("%1 Warning"),tr("To perform this operation, please ensure that the network has been disconnected."));
+        return ;
+    }
+
     item->parent()->removeChild(item);
+
+    QString info;
+    info    = tr("deleted %1").arg(d_info->name());
+    emit save_info(d_info->name(),info);
 
     device_info.remove(d_info->name());
     delete d_info;
@@ -1045,6 +1183,12 @@ void MainWindow::timerout()
 //向底层发送设置开关指令；
 void MainWindow::button_status(int device_port)
 {
+    //确保当前设备已连接网络；
+
+    if(d_info->connect() == disconnected){
+        QMessageBox::warning(this,tr("%1 Warning").arg(d_info->name()),tr("To perform this operation, please ensure that the network is connected"));
+        return ;
+    }
     if(d_info->current_status(device_port).power_port == ON){
         emit set_on_off(d_info->name(),device_port,OFF);
     }
@@ -1061,7 +1205,27 @@ void MainWindow::connected_fail(Device_Name &name, QString &error)
         label_ip_bar->setText(tr("disconnected"));
     }
 
-    QMessageBox::warning(this,tr("%1连接失败").arg(name),tr("失败原因：%1").arg(error),tr("确定"));
+    QMessageBox::warning(this,tr("%1 connected fail").arg(name),tr("cause of failure：%1").arg(error),tr("Ok"));
+    QString info;
+    info    = tr("connected fail,cause of failure: %1").arg(error);
+    emit save_info(d_info->name(),info);
+}
+
+void MainWindow::disconnect_successed(Device_Name name)
+{
+    QMessageBox::information(this,tr("%1 disconnect").arg(name),tr("%1 disconnected").arg(name),tr("Ok"));
+
+    QString info;
+    info    = tr("disconnected service!");
+    emit save_info(name,info);
+}
+
+void MainWindow::connect_successed(Device_Name name)
+{
+    QMessageBox::information(this,tr("%1 connect").arg(name),tr("%1 Connection successful").arg(name),tr("Ok"));
+    QString info;
+    info    = tr("connected service success!");
+    emit save_info(name,info);
 }
 
 //从底层接收开关状态；
@@ -1092,7 +1256,7 @@ void MainWindow::get_Max_eletric(Device_Name name, int device_port, int Max)
     if(name != d_info->name()){
         return ;
     }
-    Change_tableWidget(device_port,Max);
+    Change_tableWidget(device_port,Max);    
 }
 
 //从底层接收电流最小值；
@@ -1116,10 +1280,18 @@ void MainWindow::get_actual_eletric(Device_Name name, int device_port, int actua
     Change_tableWidget(device_port,actual,actual);
 }
 
-//从底层发送查询指令，查询当前设备状态；
-void MainWindow::search_btn_status(int device_port)
+//向底层发送查询指令，查询当前设备状态；
+void MainWindow::search_information(int device_port)
 {
-    emit search_on_off(d_info->name(),device_port);
+    if(d_info->connect() == disconnected){
+        QMessageBox::warning(this,tr("%1 Warning").arg(d_info->name()),tr("To perform this operation, please ensure that the network is connected"));
+        return ;
+    }
+    emit search_device_information(d_info->name(),device_port);
+
+    QString info;
+    info    = tr("Query the status of current device %1!").arg(d_info->current_status(device_port).describe);
+    emit save_info(d_info->name(),info);
 }
 
 //实现单机树设备时，切换表格数据；
@@ -1139,4 +1311,9 @@ void MainWindow::on_treeWidget_itemClicked(QTreeWidgetItem *item, int column)
             label_ip_bar->setText(tr("disconnected"));
         }
     }
+}
+
+void MainWindow::on_close_btn_clicked()
+{
+    ui->widget->hide();
 }

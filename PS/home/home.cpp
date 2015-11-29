@@ -43,7 +43,7 @@ void Home::open_data_log()
         list.prepend(str1);
     }
     for(int i=0;i<10;i++){
-        display(list.at(0).section(";",0,0),list.at(0).section(";",1,1),list.at(";",2));
+        display(list.at(i).section(";",0,0),list.at(i).section(";",1,1),list.at(i).section(";",2),i);
         this->str.append(list.at(i));
     }
 }
@@ -77,7 +77,7 @@ void Home::update_log(QString info)
     str.prepend(info);
     str.removeLast();
     for(int i=0;i<10;i++){
-        display(str.at(i).section(";",0,0),str.at(i).section(";",1,1),str.at(i).section(";",2));
+        display(str.at(i).section(";",0,0),str.at(i).section(";",1,1),str.at(i).section(";",2),i);
     }
 }
 

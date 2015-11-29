@@ -38,6 +38,9 @@ public:
 
     void Init_control_confirmation();
 
+//自定义窗口；
+    void come_true_widget();
+
     void GetPrevious_device();
 
     void Get_UserInfo();
@@ -74,42 +77,43 @@ public:
 
     void change_contex_menu_status(Device_Info *d_info);
 
+
 protected:
     void closeEvent(QCloseEvent *);
 
 private slots:
     void on_action_Device_triggered();
-
+//更改网络设置；
     void on_actionChang_Net_triggered();
-
+//添加用户；
     void on_actionAdd_User_triggered();
-
+//删除用户；
     void on_actionDelete_User_triggered();
-
+//更改用户密码；
     void on_actionChang_Passwd_triggered();
-
+//设备重命名；
     void on_actionRename_Device_triggered();
 
     void on_actionCheck_Power_triggered();
-
+//软件版本；
     void on_actionAbout_triggered();
-
+//帮助手册；
     void on_actionHelp_F1_triggered();
-
+//连接服务端；
     void on_action_connect_triggered();
-
+//断开连接；
     void on_action_disconnect_triggered();
-
+//折叠全部；
     void onaction_fold_triggered();
-
+//右键菜单；
     void on_treeWidget_customContextMenuRequested(const QPoint &pos);
-
+//添加设备；
     void on_action_add_device_triggered();
-
+//删除设备；
     void on_action_del_device_triggered();
 
     void display_tableWidget(Device_data&);
-
+//单机切换设备显示；
     void on_treeWidget_itemClicked(QTreeWidgetItem *item, int column);
 
     void receive_max_eletric(QStringList &);
@@ -121,12 +125,16 @@ private slots:
     void Add_user(QString &name,QString &password);
 
     void get_user();
-
+//更新右下角时间；
     void timerout();
 
     void button_status(int device_port);
 
     void connected_fail(Device_Name &name,QString &error);
+
+    void disconnect_successed(Device_Name name);
+
+    void connect_successed(Device_Name name);
 
     void get_button_status(Device_Name name, int device_port, ON_OFF on_off);
 
@@ -136,7 +144,7 @@ private slots:
 
     void get_actual_eletric(Device_Name name,int device_port,int actual);
 
-    void search_btn_status(int device_port);
+    void search_information(int device_port);
 
     void on_action_btn_triggered();
 
@@ -173,7 +181,18 @@ private slots:
 
     void set_all_on_off(int index);
 
-    void start_all_on_off(Device_Name name,ON_OFF flag);
+    void start_all_on_off(Device_Name name, int Is_delay, ON_OFF flag);
+
+    void get_operation(Device_Name name,QString str);
+
+    void get_operation(Device_Name name, QString str,QString target_name);
+
+    //存储相关操作日志；
+    void save_info_change_buzzer(int index);
+
+    void close_buzzer();
+
+    void on_close_btn_clicked();
 
 signals:
     void send_to_setMaxEle(QStringList &);
@@ -196,7 +215,7 @@ signals:
     //查询开关状态；
     void search_on_off(Device_Name);
 
-    void search_on_off(Device_Name,int device_port);
+    void search_device_information(Device_Name,int device_port);
 
     //更新tabwidget的实时电流；
     void send_real_eletric(int device_port,int val);
@@ -219,7 +238,7 @@ signals:
     //更新tabwidget的端口描述信息；
     void send_Describe(int device_port,QString str);
 
-    void all_btn_on_off(Device_Name name,int interval,ON_OFF on_off);
+    void all_btn_on_off(Device_Name name,int Is_delay,ON_OFF on_off);
 
     void change_name(Device_Name name,int row,QList<int> ele_max);
 
@@ -231,6 +250,13 @@ signals:
     void send_Control_configuration_on_delay(int device_port,int on_delay);
 
     void send_Control_configuration_off_delay(int device_port,int off_delay);
+
+    void send_display_operation(Device_Name,QString str);
+
+    void send_display_operation(Device_Name,QString str,QString target_name);
+
+    void save_info(Device_Name,QString);
+
 
 private:
     Ui::MainWindow *ui;

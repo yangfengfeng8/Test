@@ -63,6 +63,21 @@ void Control_Confirmation::set_on_delay(int device_port, int on_delay)
     ui->groupBox->findChild<QFrame*>(tr("frame_%1").arg(device_port))->setHidden(false);
 
     on_off    = ON;
+    if(on_delay){
+        Is_Delay    = 1;
+    }
+    else {
+        Is_Delay    = 0;
+    }
+}
+
+void Control_Confirmation::set_on_delay(int device_port)
+{
+    ui->groupBox->findChild<QLabel*>(tr("label%1").arg(device_port))->setText(tr("Outlet %1 will turn off in").arg(device_port));
+    ui->groupBox->findChild<QLabel*>(tr("label_%1").arg(device_port))->setText("Immediately on");
+    ui->groupBox->findChild<QFrame*>(tr("frame_%1").arg(device_port))->setHidden(false);
+    on_off    = ON;
+    Is_Delay    = 0;
 }
 
 void Control_Confirmation::set_off_delay(int device_port, int off_delay)
@@ -71,12 +86,22 @@ void Control_Confirmation::set_off_delay(int device_port, int off_delay)
     ui->groupBox->findChild<QLabel*>(tr("label_%1").arg(device_port))->setText(tr("%1").arg(off_delay));
     ui->groupBox->findChild<QFrame*>(tr("frame_%1").arg(device_port))->setHidden(false);
     on_off    = OFF;
+    Is_Delay    = 1;
+}
+
+void Control_Confirmation::set_off_delay(int device_port)
+{
+    ui->groupBox->findChild<QLabel*>(tr("label%1").arg(device_port))->setText(tr("Outlet %1 will turn off in").arg(device_port));
+    ui->groupBox->findChild<QLabel*>(tr("label_%1").arg(device_port))->setText("Immediately off");
+    ui->groupBox->findChild<QFrame*>(tr("frame_%1").arg(device_port))->setHidden(false);
+    on_off    = OFF;
+    Is_Delay    = 0;
 }
 
 void Control_Confirmation::on_Applay_clicked()
 {
     if(flag){
-        emit send_ok(name,on_off);
+        emit send_ok(name,Is_Delay,on_off);
     }
     this->accept();
 }

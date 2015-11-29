@@ -20,7 +20,9 @@ public:
     void set_hint(QString name,int row);
     void set_hint(QString name, QString dump, int row);
     void set_on_delay(int device_port,int on_delay);
+    void set_on_delay(int device_port);
     void set_off_delay(int device_port,int off_delay);
+    void set_off_delay(int device_port);
 
 private slots:
     void on_Applay_clicked();
@@ -28,7 +30,7 @@ private slots:
     void on_Cancle_clicked();
 
 signals:
-    void send_ok(Device_Name,ON_OFF);
+    void send_ok(Device_Name,int flag,ON_OFF);
 
     void send_cancle();
 
@@ -38,6 +40,7 @@ private:
     Device_Name name;
     ON_OFF on_off;
     int flag;
+    int Is_Delay;
 };
 
 #endif // CONTROL_CONFIRMATION_H

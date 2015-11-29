@@ -422,7 +422,7 @@ QHeaderView::section:vertical {
        <string>1</string>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable</set>
@@ -433,7 +433,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable</set>
@@ -444,7 +444,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable</set>
@@ -455,7 +455,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable</set>
@@ -466,7 +466,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable</set>
@@ -477,7 +477,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
      </item>
      <item row="0" column="6">
@@ -485,7 +485,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
      </item>
      <item row="0" column="7">
@@ -501,7 +501,7 @@ QHeaderView::section:vertical {
        <string>2</string>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable</set>
@@ -512,7 +512,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable</set>
@@ -523,7 +523,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable</set>
@@ -534,7 +534,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable</set>
@@ -545,7 +545,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable</set>
@@ -556,7 +556,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
      </item>
      <item row="1" column="6">
@@ -564,7 +564,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
      </item>
      <item row="1" column="7">
@@ -580,7 +580,7 @@ QHeaderView::section:vertical {
        <string>3</string>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable</set>
@@ -591,7 +591,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
      </item>
      <item row="2" column="2">
@@ -599,7 +599,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable</set>
@@ -610,7 +610,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable</set>
@@ -621,7 +621,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable</set>
@@ -632,7 +632,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
      </item>
      <item row="2" column="6">
@@ -640,7 +640,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
      </item>
      <item row="2" column="7">
@@ -656,7 +656,7 @@ QHeaderView::section:vertical {
        <string>4</string>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable</set>
@@ -667,7 +667,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
      </item>
      <item row="3" column="2">
@@ -675,7 +675,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable</set>
@@ -686,7 +686,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable</set>
@@ -697,7 +697,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable</set>
@@ -708,7 +708,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
      </item>
      <item row="3" column="6">
@@ -716,7 +716,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
      </item>
      <item row="3" column="7">
@@ -732,7 +732,7 @@ QHeaderView::section:vertical {
        <string>5</string>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable</set>
@@ -743,7 +743,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
      </item>
      <item row="4" column="2">
@@ -751,7 +751,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable</set>
@@ -762,7 +762,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable</set>
@@ -773,7 +773,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable</set>
@@ -784,7 +784,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
      </item>
      <item row="4" column="6">
@@ -792,7 +792,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
      </item>
      <item row="4" column="7">
@@ -808,7 +808,7 @@ QHeaderView::section:vertical {
        <string>6</string>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable</set>
@@ -819,7 +819,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
      </item>
      <item row="5" column="2">
@@ -827,7 +827,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable</set>
@@ -838,7 +838,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable</set>
@@ -849,7 +849,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable</set>
@@ -860,7 +860,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
      </item>
      <item row="5" column="6">
@@ -868,7 +868,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
      </item>
      <item row="5" column="7">
@@ -884,7 +884,7 @@ QHeaderView::section:vertical {
        <string>7</string>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable</set>
@@ -895,7 +895,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
      </item>
      <item row="6" column="2">
@@ -903,7 +903,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable</set>
@@ -914,7 +914,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable</set>
@@ -925,7 +925,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable</set>
@@ -936,7 +936,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
      </item>
      <item row="6" column="6">
@@ -944,7 +944,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
      </item>
      <item row="6" column="7">
@@ -960,7 +960,7 @@ QHeaderView::section:vertical {
        <string>8</string>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable</set>
@@ -971,7 +971,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
      </item>
      <item row="7" column="2">
@@ -979,7 +979,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable</set>
@@ -990,7 +990,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable</set>
@@ -1001,7 +1001,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable</set>
@@ -1012,7 +1012,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
      </item>
      <item row="7" column="6">
@@ -1020,7 +1020,7 @@ QHeaderView::section:vertical {
        <string/>
       </property>
       <property name="textAlignment">
-       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+       <set>AlignCenter</set>
       </property>
      </item>
      <item row="7" column="7">
@@ -1034,7 +1034,7 @@ QHeaderView::section:vertical {
     </widget>
    </item>
    <item>
-    <widget class="QTextBrowser" name="textBrowser"/>
+    <widget class="QPlainTextEdit" name="plainTextEdit"/>
    </item>
   </layout>
  </widget>

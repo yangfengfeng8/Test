@@ -23,7 +23,7 @@ Control::Control(QWidget *parent) :
 
     QSplitter *splitter   = new QSplitter(Qt::Vertical);
     splitter->addWidget(ui->control_tableWidget);
-    splitter->addWidget((QWidget *)ui->textBrowser);
+    splitter->addWidget((QWidget *)ui->plainTextEdit);
     splitter->setHandleWidth(0);
     splitter->setCollapsible(0,false);
     splitter->setCollapsible(1,false);
@@ -87,7 +87,7 @@ void Control::Init_tabWidget(int row,int column)
         search->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
         search->setMaximumSize(55,40);
         search->setMinimumSize(55,40);
-        connect(btn,SIGNAL(button_status(int)),this,SIGNAL(search_btn_status(int)));
+        connect(search,SIGNAL(button_status(int)),this,SIGNAL(search_information(int)));
 
         QWidget *widget_3     = new QWidget;
         QHBoxLayout *h_layout_3   = new QHBoxLayout;
@@ -138,18 +138,23 @@ void Control::on_control_tableWidget_itemChanged(QTableWidgetItem *item)
 
 void Control::get_Max(int device_port, int val)
 {
+    disconnect(ui->control_tableWidget,SIGNAL(itemChanged(QTableWidgetItem*)),this,SLOT(on_control_tableWidget_itemChanged(QTableWidgetItem*)));
     model->setData(model->index(device_port,5),(double)val);
-    max.insert(device_port,(double)val);
+    connect(ui->control_tableWidget,SIGNAL(itemChanged(QTableWidgetItem*)),this,SLOT(on_control_tableWidget_itemChanged(QTableWidgetItem*)));
 }
 
 void Control::get_Min(int device_port, int val)
 {
+    disconnect(ui->control_tableWidget,SIGNAL(itemChanged(QTableWidgetItem*)),this,SLOT(on_control_tableWidget_itemChanged(QTableWidgetItem*)));
     model->setData(model->index(device_port,6),(double)val);
+    connect(ui->control_tableWidget,SIGNAL(itemChanged(QTableWidgetItem*)),this,SLOT(on_control_tableWidget_itemChanged(QTableWidgetItem*)));
 }
 
 void Control::get_Describe(int device_port, QString str)
 {
+    disconnect(ui->control_tableWidget,SIGNAL(itemChanged(QTableWidgetItem*)),this,SLOT(on_control_tableWidget_itemChanged(QTableWidgetItem*)));
     model->setData(model->index(device_port,8),str);
+    connect(ui->control_tableWidget,SIGNAL(itemChanged(QTableWidgetItem*)),this,SLOT(on_control_tableWidget_itemChanged(QTableWidgetItem*)));
 }
 
 void Control::get_btn_status(int device_port, ON_OFF status)
@@ -176,5 +181,24 @@ void Control::get_row(int row)
         ui->control_tableWidget->setRowHidden(i,true);
     }
     ui->control_tableWidget->setMinimumHeight(row*60);
+}
+
+//显示操作的数据；
+void Control::display_operation(Device_Name name, QString str)
+{
+    ui->plainTextEdit->insertPlainText(tr("(%1)-->>  ").arg(name) + str +"\n");
+    QTextCursor cursor  = ui->plainTextEdit->textCursor();
+    cursor.movePosition(QTextCursor::End);
+    ui->plainTextEdit->setTextCursor(cursor);
+}
+
+//显示服务器返回的数据；
+void Control::display_operation(Device_Name name, QString str, QString target_name)
+{
+    name    = name;
+    ui->plainTextEdit->insertPlainText(tr("(%1)-->>  ").arg(target_name) + str + "\n");
+    QTextCursor cursor  = ui->plainTextEdit->textCursor();
+    cursor.movePosition(QTextCursor::End);
+    ui->plainTextEdit->setTextCursor(cursor);
 }
 

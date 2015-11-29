@@ -13,22 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_4">
-   <property name="spacing">
-    <number>0</number>
-   </property>
-   <property name="leftMargin">
-    <number>0</number>
-   </property>
-   <property name="topMargin">
-    <number>0</number>
-   </property>
-   <property name="rightMargin">
-    <number>0</number>
-   </property>
-   <property name="bottomMargin">
-    <number>0</number>
-   </property>
+  <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
     <widget class="QFrame" name="frame">
      <property name="frameShape">
@@ -65,7 +50,7 @@
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_2">
            <item>
-            <widget class="QRadioButton" name="radioButton">
+            <widget class="QRadioButton" name="radioButton_last">
              <property name="text">
               <string>Last</string>
              </property>
@@ -134,53 +119,32 @@
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout">
            <item>
-            <widget class="QRadioButton" name="radioButton_2">
+            <widget class="QRadioButton" name="radioButton_From">
              <property name="text">
               <string>From</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit_8">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
+            <widget class="QDateEdit" name="old_date">
              <property name="minimumSize">
               <size>
-               <width>0</width>
-               <height>25</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
                <width>91</width>
-               <height>16777215</height>
+               <height>25</height>
               </size>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit_6">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
+            <widget class="QTimeEdit" name="old_time">
              <property name="minimumSize">
               <size>
-               <width>0</width>
+               <width>91</width>
                <height>25</height>
               </size>
              </property>
-             <property name="maximumSize">
-              <size>
-               <width>91</width>
-               <height>16777215</height>
-              </size>
+             <property name="displayFormat">
+              <string>hh:mm:ss</string>
              </property>
             </widget>
            </item>
@@ -192,46 +156,25 @@
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit_7">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
+            <widget class="QDateEdit" name="new_date">
              <property name="minimumSize">
               <size>
-               <width>0</width>
-               <height>25</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
                <width>91</width>
-               <height>16777215</height>
+               <height>25</height>
               </size>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit_4">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
+            <widget class="QTimeEdit" name="new_time">
              <property name="minimumSize">
               <size>
-               <width>0</width>
+               <width>91</width>
                <height>25</height>
               </size>
              </property>
-             <property name="maximumSize">
-              <size>
-               <width>91</width>
-               <height>16777215</height>
-              </size>
+             <property name="displayFormat">
+              <string>hh:mm:ss</string>
              </property>
             </widget>
            </item>
@@ -276,7 +219,7 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout">
          <item>
-          <widget class="QPushButton" name="pushButton">
+          <widget class="QPushButton" name="apply">
            <property name="maximumSize">
             <size>
              <width>40</width>
@@ -289,7 +232,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_2">
+          <widget class="QPushButton" name="clear_log">
            <property name="maximumSize">
             <size>
              <width>71</width>
@@ -302,7 +245,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_3">
+          <widget class="QPushButton" name="create_new_window">
            <property name="maximumSize">
             <size>
              <width>161</width>
@@ -334,29 +277,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QTableWidget" name="tableWidget">
-     <attribute name="horizontalHeaderStretchLastSection">
-      <bool>true</bool>
-     </attribute>
-     <attribute name="verticalHeaderVisible">
-      <bool>false</bool>
-     </attribute>
-     <column>
-      <property name="text">
-       <string>Date</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Time</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Event</string>
-      </property>
-     </column>
-    </widget>
+    <widget class="QTextBrowser" name="textBrowser"/>
    </item>
   </layout>
  </widget>
