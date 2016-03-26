@@ -1,0 +1,16 @@
+INPUT(
+./release\main.o
+./release\mainwindow.o
+./release\padevicelist.o
+./release\paPortName.o
+./release\pamanagertab.o
+./release\pacontrol.o
+./release\pabase.o
+./release\qrc_image.o
+./release\moc_mainwindow.o
+./release\moc_padevicelist.o
+./release\moc_paPortName.o
+./release\moc_pamanagertab.o
+./release\moc_pacontrol.o
+./release\moc_pabase.o
+);

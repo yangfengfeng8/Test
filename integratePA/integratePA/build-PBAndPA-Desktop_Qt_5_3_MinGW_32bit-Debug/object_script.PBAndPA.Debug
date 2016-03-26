@@ -1,0 +1,16 @@
+INPUT(
+./debug/main.o
+./debug/mainwindow.o
+./debug/padevicelist.o
+./debug/paPortName.o
+./debug/pamanagertab.o
+./debug/pacontrol.o
+./debug/pabase.o
+./debug/qrc_image.o
+./debug/moc_mainwindow.o
+./debug/moc_padevicelist.o
+./debug/moc_paPortName.o
+./debug/moc_pamanagertab.o
+./debug/moc_pacontrol.o
+./debug/moc_pabase.o
+);

@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>image/gray.png</file>
+        <file>image/green.png</file>
+        <file>image/hbte.bmp</file>
+        <file>image/HBTE.ico</file>
+        <file>image/HBTE_Logo.png</file>
+        <file>image/red.png</file>
+        <file>image/satisfactory.png</file>
+        <file>image/unsatisfactory.png</file>
+    </qresource>
+</RCC>
